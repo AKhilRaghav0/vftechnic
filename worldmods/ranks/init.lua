@@ -225,7 +225,7 @@ end
 
 -- [function] Send prefixed message (if enabled)
 function ranks.chat_send(name, message)
-	if minetest.settings:get("ranks.prefix_chat") ~= "false" then
+	if minetest.settings:get("ranks.prefix_chat") ~= "true" then
 		local rank = ranks.get_rank(name)
 		if rank ~= nil then
 			local def = ranks.get_def(rank)
@@ -274,13 +274,7 @@ minetest.register_on_joinplayer(function(player)
 		player:set_attribute("ranks:rank", nil)
 	end
 
-	local rank = ranks.get_rank(name)
-	if rank then
-		-- invisible name if alpha is 0
-		local def = ranks.get_def(rank)
-		if def.colour.a == 0 then
-			player:set_nametag_attributes({color = {a = 0, r = 255, g = 255, b = 255}})
-		end
+	if ranks.get_rank(name) then
 		-- Update nametag
 		ranks.update_nametag(name)
 		-- Update privileges
